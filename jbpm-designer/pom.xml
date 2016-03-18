@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kie</groupId>
+    <artifactId>kie-parent-with-dependencies</artifactId>
+    <version>7.0.0-SNAPSHOT</version>
+    <!-- relativePath causes out-of-date problems on hudson slaves -->
+    <!--<relativePath>../droolsjbpm-build-bootstrap/pom.xml</relativePath>-->
+  </parent>
+  <groupId>org.jbpm</groupId>
+  <artifactId>jbpm-designer</artifactId>
+  <packaging>pom</packaging>
+
+  <name>jBPM Designer</name>
+  <description>jBPM Designer - web-based BPMN2 modeller</description>
+  <url>https://github.com/droolsjbpm/jbpm-designer</url>
+
+  <scm>
+    <connection>scm:git:git@github.com:droolsjbpm/jbpm-designer.git</connection>
+    <developerConnection>scm:git:git@github.com:droolsjbpm/jbpm-designer.git</developerConnection>
+    <url>https://github.com/droolsjbpm/jbpm-designer</url>
+  </scm>
+
+  <modules>
+    <module>jbpm-designer-api</module>
+    <module>jbpm-designer-backend</module>
+    <module>jbpm-designer-client</module>
+    <module>jbpm-designer-utilities</module>
+    <module>jbpm-designer-standalone</module>
+    <module>jbpm-designer-distribution-wars</module>
+    <module>jbpm-designer-distribution-wars-cdi1.0</module>
+  </modules>
+
+  <properties>
+    <port>8888</port>
+  </properties>
+
+  <build>
+    <plugins>
+      <!--Fix translations from Zanata -->
+      <plugin>
+            <groupId>com.google.code.maven-replacer-plugin</groupId>
+            <artifactId>replacer</artifactId>
+            <configuration>
+                <includes>
+                    <include>**/DesignerEditor*.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>**/ErraiApp.properties</exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+
+      <!-- Zanata - translations -->
+      <plugin>
+        <groupId>org.zanata</groupId>
+        <artifactId>zanata-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native2ascii-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <!--executions>
+            <execution>
+                <goals>
+                    <goal>native2ascii</goal>
+                </goals>
+            </execution>
+        </executions-->
+          <configuration>
+              <includes>
+                  <include>**/DesignerEditorConstants*.properties</include>
+                  <include>**/DesignerConstants*.properties</include>
+                  <include>**/Constants*.properties</include>
+              </includes>
+              <workDir>.</workDir>
+              <tempDir>.</tempDir>
+          </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>fullProfile</id>
+      <activation>
+        <property>
+          <name>full</name>
+        </property>
+      </activation>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+</project>
