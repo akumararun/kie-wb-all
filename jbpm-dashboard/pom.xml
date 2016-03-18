@@ -22,7 +22,7 @@
 
   <parent>
     <groupId>org.kie</groupId>
-    <artifactId>kie-parent-with-dependencies</artifactId>
+    <artifactId>kie-workbench-parent</artifactId>
     <version>7.0.0-SNAPSHOT</version>
   </parent>
 
